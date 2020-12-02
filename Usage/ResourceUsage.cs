@@ -11,33 +11,32 @@ namespace RemoteMonitor.Usage
     }
     public class ResourceUsage
     {
+
         public ResourceUsage(ResourceUsageType resourceType)
         {
             this.resourceType = resourceType;
         }
         public ResourceUsageType resourceType { get; set; }
 
+        public float cpuUsage() 
+        {
+            PerformanceCounter performanceCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+
+            performanceCounter.NextValue();
+            System.Threading.Thread.Sleep(1000);
+            return performanceCounter.NextValue();
+        }
+
+        public float memoryUsage()
+        {
+            PerformanceCounter performanceCounter = new PerformanceCounter("Memory", "Available MBytes");
+            return performanceCounter.NextValue();
+        }
+
         public float Current()
         {
-            float performanceValue  = 0;
-            PerformanceCounter performanceCounter = new PerformanceCounter();
-            if (resourceType == ResourceUsageType.cpu)
-            {
-                performanceCounter.CategoryName = "Processor";
-                performanceCounter.CounterName = "% Processor Time";
-                performanceCounter.InstanceName = "_Total";
-
-                performanceValue = performanceCounter.NextValue();
-                System.Threading.Thread.Sleep(1000);
-                performanceValue = performanceCounter.NextValue();
-            } 
-            else
-            {
-                performanceCounter.CategoryName = "Memory";
-                performanceCounter.CounterName = "Available MBytes";
-                performanceValue = performanceCounter.NextValue();
-            }
-            return performanceValue;
+            if (resourceType == ResourceUsageType.cpu) return this.cpuUsage();
+            return this.memoryUsage();
         }
     }   
 }
