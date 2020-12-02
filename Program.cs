@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RemoteMonitor.Usage;
 
 namespace RemoteMonitor
 {
@@ -13,7 +14,9 @@ namespace RemoteMonitor
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            // CreateHostBuilder(args).Build().Run();
+            ResourceUsage memoryUsage = new ResourceUsage(ResourceUsageType.cpu);
+            Console.WriteLine(memoryUsage.Current());
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
