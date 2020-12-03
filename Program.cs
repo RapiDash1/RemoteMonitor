@@ -15,7 +15,9 @@ namespace RemoteMonitor
         public static void Main(string[] args)
         {
             // CreateHostBuilder(args).Build().Run();
-            ResourceUsage memoryUsage = new ResourceUsage(ResourceUsageType.cpu);
+            CpuUsage cpuUsage = new CpuUsage();
+            Console.WriteLine(cpuUsage.Current());
+            MemoryUsage memoryUsage = new MemoryUsage();
             Console.WriteLine(memoryUsage.Current());
         }
 
