@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RemoteMonitor.Usage;
+using RemoteMonitor.Analytics;
 
 namespace RemoteMonitor
 {
@@ -15,10 +16,12 @@ namespace RemoteMonitor
         public static void Main(string[] args)
         {
             // CreateHostBuilder(args).Build().Run();
-            CpuUsage cpuUsage = new CpuUsage();
-            Console.WriteLine(cpuUsage.Current());
-            MemoryUsage memoryUsage = new MemoryUsage();
-            Console.WriteLine(memoryUsage.Current());
+            // CpuUsage cpuUsage = new CpuUsage();
+            // Console.WriteLine(cpuUsage.Current());
+            // MemoryUsage memoryUsage = new MemoryUsage();
+            // Console.WriteLine(memoryUsage.Current());
+            CpuUsageAnalytics cpuUsageAnalytics = new CpuUsageAnalytics();
+            Console.WriteLine(cpuUsageAnalytics.IsResourceUsagePeak());
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
