@@ -21,7 +21,7 @@ namespace RemoteMonitor
             // MemoryUsage memoryUsage = new MemoryUsage();
             // Console.WriteLine(memoryUsage.Current());
             CpuUsageAnalytics cpuUsageAnalytics = new CpuUsageAnalytics();
-            Console.WriteLine(cpuUsageAnalytics.IsResourceUsagePeak());
+            cpuUsageAnalytics.GetResourceUsage(@"SELECT * from ResourceUsage");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
