@@ -2,10 +2,10 @@ using System;
 
 namespace RemoteMonitor.Models
 {
-    public class ResourceUsageModel
+    public class TotalResourceUsageModel
     {
 
-        public ResourceUsageModel(UInt64 epocTime, float cpuUsage, float memoryUsage)
+        public TotalResourceUsageModel(UInt64 epocTime, float cpuUsage, float memoryUsage)
         {
             this.epocTime = epocTime;
             this.cpuUsage = cpuUsage;

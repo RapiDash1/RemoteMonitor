@@ -3,16 +3,16 @@ using RemoteMonitor.Models;
 
 namespace RemoteMonitor.Analytics
 {   
-    class CpuUsageAnalytics : ResourceUsageAnalytics
+    class MemoryUsageAnalytics : ResourceUsageAnalytics
     {
-        public CpuUsageAnalytics()
+        public MemoryUsageAnalytics()
         {
-            this.resourceUsage = new CpuUsage();
+            this.resourceUsage = new MemoryUsage();
         }
 
         public override ResourceUsageModel[] resourceUsagesPerDay()
         {
-            return new CpuUsageModel[]{};
+            return new MemoryUsageModel[]{};
         }
     }
 }

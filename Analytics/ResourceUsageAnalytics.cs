@@ -1,7 +1,4 @@
-using System;
 using RemoteMonitor.Usage;
-using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
 using RemoteMonitor.Models;
 
 namespace RemoteMonitor.Analytics
@@ -11,7 +8,7 @@ namespace RemoteMonitor.Analytics
         public float peakUsageThreshold { get; set; } = 90;
         public float lowestUsageThreshold { get; set; } = 5;
 
-        protected ResourceUsage resourceUsage;
+        protected ResourceUsage resourceUsage = new CpuUsage();
 
         public bool IsResourceUsagePeak()
         {
@@ -23,39 +20,19 @@ namespace RemoteMonitor.Analytics
             return resourceUsage.Current() <= lowestUsageThreshold;
         }
 
-        public void SaveResourceUsage()
+        public virtual ResourceUsageModel[] resourceUsagesPerDay()
         {
-            // Save info to db
+            return new ResourceUsageModel[]{};
         }
 
-
-        public List<ResourceUsageModel> GetResourceUsage(string query)
+        public long longestPeakUsageDuration()
         {
-            List<ResourceUsageModel> resourceUsages = new List<ResourceUsageModel>{};
-            using (var connection = new SqliteConnection("Data Source=ResourceDb.db"))
-            {
-                connection.Open();
-                var command = connection.CreateCommand();
-                command.CommandText =
-                query;
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        resourceUsages.Add(new ResourceUsageModel(
-                                Convert.ToUInt64(reader.GetString(0)), 
-                                        reader.GetFloat(1), reader.GetFloat(2)));
-                    }
-                }
-            }
-            foreach (ResourceUsageModel usage in resourceUsages)    
-            {
-                Console.WriteLine(usage.ToString());
-            }
-            return resourceUsages;
+            return 0;
         }
 
-
+        public long longestLowestUsageDuration()
+        {
+            return 0;
+        }
     }
 }
