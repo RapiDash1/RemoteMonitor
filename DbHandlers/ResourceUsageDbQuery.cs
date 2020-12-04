@@ -5,7 +5,7 @@ using RemoteMonitor.Models;
 
 namespace RemoteMonitor.Analytics
 {
-    public class ResourceUsageDbHandler
+    public class ResourceUsageDbQuery
     {
 
         public string databaseName()
@@ -18,23 +18,16 @@ namespace RemoteMonitor.Analytics
             return String.Format("Data Source={0}.db", this.databaseName());
         }
 
-        public void SaveResourceUsage(string query)
-        {
-            List<TotalResourceUsageModel> resourceUsages = new List<TotalResourceUsageModel>{};
-            using (var connection = new SqliteConnection(this.databaseConnectionString()))
-            {
-                connection.Open();
-                var command = connection.CreateCommand();
-                command.CommandText = query;
 
-                command.ExecuteReader();
-            }
+        public virtual ResourceUsageModel constructUsageModel(SqliteDataReader reader)
+        {
+            return new ResourceUsageModel(Convert.ToUInt64(reader.GetString(0)));
         }
 
 
-        public List<TotalResourceUsageModel> GetResourceUsage(string query)
+        public List<ResourceUsageModel> GetResourceUsage(string query)
         {
-            List<TotalResourceUsageModel> resourceUsages = new List<TotalResourceUsageModel>{};
+            List<ResourceUsageModel> resourceUsages = new List<ResourceUsageModel>{};
             using (var connection = new SqliteConnection(this.databaseConnectionString()))
             {
                 connection.Open();
@@ -45,13 +38,11 @@ namespace RemoteMonitor.Analytics
                 {
                     while (reader.Read())
                     {
-                        resourceUsages.Add(new TotalResourceUsageModel(
-                                Convert.ToUInt64(reader.GetString(0)), 
-                                        reader.GetFloat(1), reader.GetFloat(2)));
+                        resourceUsages.Add(constructUsageModel(reader));
                     }
                 }
             }
-            foreach (TotalResourceUsageModel usage in resourceUsages)    
+            foreach (ResourceUsageModel usage in resourceUsages)    
             {
                 Console.WriteLine(usage.ToString());
             }
