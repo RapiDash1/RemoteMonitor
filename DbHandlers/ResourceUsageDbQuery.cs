@@ -8,19 +8,25 @@ namespace RemoteMonitor.DbHandlers
     public class ResourceUsageDbQuery
     {
 
-        public string databaseName()
+        public string DatabaseName()
         {
             return "ResourceDb";
         }
 
-        public string tableName()
+        public string TableName()
         {
             return "ResourceUsage";
         }
 
-        public string databaseConnectionString()
+        public string DatabaseConnectionString()
         {
-            return String.Format("Data Source={0}.db", this.databaseName());
+            return String.Format("Data Source={0}.db", this.DatabaseName());
+        }
+
+        public int StartOfTheDayInEpochSeconds()
+        {
+            TimeSpan t = DateTime.Today.Date - new DateTime(1970, 1, 1);
+            return (int)t.TotalSeconds;
         }
 
 
@@ -33,7 +39,7 @@ namespace RemoteMonitor.DbHandlers
         public List<ResourceUsageModel> GetResourceUsage(string query)
         {
             List<ResourceUsageModel> resourceUsages = new List<ResourceUsageModel>{};
-            using (var connection = new SqliteConnection(this.databaseConnectionString()))
+            using (var connection = new SqliteConnection(this.DatabaseConnectionString()))
             {
                 connection.Open();
                 var command = connection.CreateCommand();
@@ -47,10 +53,10 @@ namespace RemoteMonitor.DbHandlers
                     }
                 }
             }
-            foreach (ResourceUsageModel usage in resourceUsages)    
-            {
-                Console.WriteLine(usage.ToString());
-            }
+            // foreach (ResourceUsageModel usage in resourceUsages)    
+            // {
+            //     Console.WriteLine(usage.ToString());
+            // }
             return resourceUsages;
         }
     }

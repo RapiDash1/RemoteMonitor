@@ -5,23 +5,23 @@ namespace RemoteMonitor.Models
     public class TotalResourceUsageModel
     {
 
-        public TotalResourceUsageModel(int epocTime, float cpuUsage, float memoryUsage)
+        public TotalResourceUsageModel(int epocTime, float cpuUsage, float memoryAvailable)
         {
             this.epocTime = epocTime;
             this.cpuUsage = cpuUsage;
-            this.memoryUsage = memoryUsage;
+            this.memoryAvailable = memoryAvailable;
         }
         
         public int epocTime { get; set; }
 
         public float cpuUsage { get; set; }
 
-        public float memoryUsage { get; set; }
+        public float memoryAvailable { get; set; }
 
         public override string ToString()
         {
             return "EpocTime: " + this.epocTime + " || CpuUsage: " + 
-                    this.cpuUsage + "% || MemoryUsage: " + this.memoryUsage +" MB";
+                    this.cpuUsage + "% || MemoryAvailable: " + this.memoryAvailable +" MB";
         }
     }
 }

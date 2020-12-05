@@ -5,16 +5,16 @@ namespace RemoteMonitor.Models
     public class MemoryUsageModel : ResourceUsageModel
     {
 
-        public float memoryUsage { get; set; }
+        public float memoryAvailable { get; set; }
 
-        public MemoryUsageModel(UInt64 epocTime, float memoryUsage) : base(epocTime)
+        public MemoryUsageModel(UInt64 epocTime, float memoryAvailable) : base(epocTime)
         {
-            this.memoryUsage = memoryUsage;
+            this.memoryAvailable = memoryAvailable;
         }
 
         public override string ToString()
         {
-            return "EpocTime: " + this.epocTime + " || MemoryAvailable: " + this.memoryUsage + " MB";
+            return "EpocTime: " + this.epocTime + " || MemoryAvailable: " + this.memoryAvailable + " MB";
         }
     }
 }

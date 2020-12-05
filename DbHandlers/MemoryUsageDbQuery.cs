@@ -2,6 +2,7 @@ using System;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using RemoteMonitor.Models;
+using System.Linq;
 
 namespace RemoteMonitor.DbHandlers
 {
@@ -13,9 +14,13 @@ namespace RemoteMonitor.DbHandlers
             return new MemoryUsageModel(Convert.ToUInt64(reader.GetString(0)), reader.GetFloat(1));
         }
 
-        public List<ResourceUsageModel> GetMemoryUsage()
+        public List<MemoryUsageModel> GetDailyUsage()
         {
-            return GetResourceUsage(String.Format(@"SELECT EpocTime, MemoryUsage FROM {0}", base.tableName()));
+            List<ResourceUsageModel> cpuUsages = GetResourceUsage(String.Format(
+                        @"SELECT EpocTime, MemoryUsage FROM {0} WHERE EpocTime >= {1}", 
+                                    base.TableName(), base.StartOfTheDayInEpochSeconds()));
+            
+            return cpuUsages.Cast<MemoryUsageModel>().ToList();
         }
     }
 }

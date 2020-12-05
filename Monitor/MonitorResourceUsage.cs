@@ -20,11 +20,11 @@ namespace RemoteMonitor.Monitor
         public void SaveUsage()
         {
             CpuUsage cpuUsage = new CpuUsage();
-            MemoryUsage memoryUsage = new MemoryUsage();
+            MemoryUsage memoryAvailable = new MemoryUsage();
             while (true)
             {   
                 float cpuUsageValue = cpuUsage.Current();
-                float memoryUsageValue = memoryUsage.Current();
+                float memoryUsageValue = memoryAvailable.Current();
                 Console.WriteLine(Convert.ToString(cpuUsageValue) + "% || " + Convert.ToString(memoryUsageValue) + " MB");
                 this.dbHandler.SaveResourceUsage(new TotalResourceUsageModel(this.SecondsSinceEpoh(), cpuUsageValue, memoryUsageValue));
             }

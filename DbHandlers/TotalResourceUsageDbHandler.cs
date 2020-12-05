@@ -32,7 +32,7 @@ namespace RemoteMonitor.DbHandlers
                 var command = connection.CreateCommand();
                 command.CommandText = String.Format(@"INSERT INTO {0} (EpocTime, 
                         CpuUsage, MemoryUsage) VALUES ({1}, {2}, {3});", this.tableName(),
-                                usageModel.epocTime, usageModel.cpuUsage, usageModel.memoryUsage);
+                                usageModel.epocTime, usageModel.cpuUsage, usageModel.memoryAvailable);
 
                 command.ExecuteReader();
             }
