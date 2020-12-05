@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using RemoteMonitor.Monitor;
+using RemoteMonitor.DbHandlers;
 
 namespace RemoteMonitor
 {
@@ -9,9 +10,9 @@ namespace RemoteMonitor
         public static void Main(string[] args)
         {
             // CreateHostBuilder(args).Build().Run();
-            MonitorResourceUsage usage = new MonitorResourceUsage();
+            MemoryUsageDbQuery usage = new MemoryUsageDbQuery();
             // usage.SaveUsage();
-            usage.GetResourceUsage();
+            usage.GetMemoryUsage();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -14,7 +14,7 @@ namespace RemoteMonitor.Models
 
         public override string ToString()
         {
-            return "EpocTime: " + this.epocTime + " || CpuUsage: " + this.memoryUsage + "%";
+            return "EpocTime: " + this.epocTime + " || MemoryAvailable: " + this.memoryUsage + " MB";
         }
     }
 }

@@ -13,13 +13,18 @@ namespace RemoteMonitor.DbHandlers
             return "ResourceDb";
         }
 
+        public string tableName()
+        {
+            return "ResourceUsage";
+        }
+
         public string databaseConnectionString()
         {
             return String.Format("Data Source={0}.db", this.databaseName());
         }
 
 
-        public virtual ResourceUsageModel constructUsageModel(SqliteDataReader reader)
+        public virtual ResourceUsageModel ConstructUsageModel(SqliteDataReader reader)
         {
             return new ResourceUsageModel(Convert.ToUInt64(reader.GetString(0)));
         }
@@ -33,12 +38,12 @@ namespace RemoteMonitor.DbHandlers
                 connection.Open();
                 var command = connection.CreateCommand();
                 command.CommandText = query;
-
+                Console.WriteLine(query);
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        resourceUsages.Add(constructUsageModel(reader));
+                        resourceUsages.Add(ConstructUsageModel(reader));
                     }
                 }
             }
