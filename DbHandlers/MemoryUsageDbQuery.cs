@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using RemoteMonitor.Models;
 
-namespace RemoteMonitor.Analytics
+namespace RemoteMonitor.DbHandlers
 {
     public class MemoryUsageDbQuery : ResourceUsageDbQuery
     {
