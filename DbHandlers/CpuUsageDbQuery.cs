@@ -14,7 +14,7 @@ namespace RemoteMonitor.DbHandlers
             return new CpuUsageModel(Convert.ToUInt64(reader.GetString(0)), reader.GetFloat(1));
         }
 
-        public List<CpuUsageModel> DailyUsage()
+        public List<CpuUsageModel> GetDailyUsage()
         {
             List<ResourceUsageModel> cpuUsages = GetResourceUsage(String.Format(
                         @"SELECT EpocTime, CpuUsage FROM {0} WHERE EpocTime >= {1}", 

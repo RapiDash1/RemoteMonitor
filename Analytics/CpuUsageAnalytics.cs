@@ -1,18 +1,21 @@
 using RemoteMonitor.Usage;
 using RemoteMonitor.Models;
+using System.Collections.Generic;
+using RemoteMonitor.DbHandlers;
 
 namespace RemoteMonitor.Analytics
 {   
     class CpuUsageAnalytics : ResourceUsageAnalytics
     {
-        public CpuUsageAnalytics()
+        public CpuUsageAnalytics() : base()
         {
             this.resourceUsage = new CpuUsage();
         }
 
-        public override ResourceUsageModel[] resourceUsagesPerDay()
+        public List<CpuUsageModel> Daily()
         {
-            return new CpuUsageModel[]{};
+            CpuUsageDbQuery cpuUsageDbQuery = new CpuUsageDbQuery();
+            return cpuUsageDbQuery.GetDailyUsage();
         }
     }
 }

@@ -1,5 +1,7 @@
 using RemoteMonitor.Usage;
 using RemoteMonitor.Models;
+using RemoteMonitor.DbHandlers;
+using System.Collections.Generic;
 
 namespace RemoteMonitor.Analytics
 {   
@@ -8,16 +10,16 @@ namespace RemoteMonitor.Analytics
         public float peakUsageThreshold { get; set; } = 90;
         public float lowestUsageThreshold { get; set; } = 5;
 
-        protected ResourceUsage resourceUsage = new CpuUsage();
+        protected ResourceUsage resourceUsage;
 
-        public bool IsResourceUsagePeak()
+        public virtual bool IsResourceUsagePeak(float resourceUsage)
         {
-            return resourceUsage.Current() >= peakUsageThreshold;
+            return resourceUsage >= peakUsageThreshold;
         }
 
-        public bool IsResourceUsageLowest()
+        public virtual bool IsResourceUsageLowest(float resourceUsage)
         {
-            return resourceUsage.Current() <= lowestUsageThreshold;
+            return resourceUsage <= lowestUsageThreshold;
         }
 
         public virtual ResourceUsageModel[] resourceUsagesPerDay()
@@ -25,14 +27,19 @@ namespace RemoteMonitor.Analytics
             return new ResourceUsageModel[]{};
         }
 
-        public long longestPeakUsageDuration()
+        public float longestPeakUsageDuration()
         {
             return 0;
         }
 
-        public long longestLowestUsageDuration()
+        public float longestLowestUsageDuration()
         {
             return 0;
+        }
+
+        public float Current()
+        {
+            return resourceUsage.Current();
         }
     }
 }
