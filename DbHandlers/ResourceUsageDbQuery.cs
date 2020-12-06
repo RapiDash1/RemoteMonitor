@@ -53,10 +53,6 @@ namespace RemoteMonitor.DbHandlers
                     }
                 }
             }
-            // foreach (ResourceUsageModel usage in resourceUsages)    
-            // {
-            //     Console.WriteLine(usage.ToString());
-            // }
             return resourceUsages;
         }
 

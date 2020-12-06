@@ -32,28 +32,45 @@ namespace RemoteMonitor.Controller
         [HttpGet("peakusages")]
         public List<CpuUsageModel> PeakUsages()
         {
-            List<CpuUsageModel> dailyUsages = this.Daily();
-            List<CpuUsageModel> peakUsages = new List<CpuUsageModel>();
-
-            foreach(CpuUsageModel usage in dailyUsages)
-            {
-                if (analytics.IsResourceUsagePeak(usage.resourceUsage))
-                {
-                    peakUsages.Add(usage);
-                }
-            }
-            return peakUsages;
+            return this.ExtremeUsage(true);
         }
 
         [HttpGet("lowestusages")]
         public List<CpuUsageModel> LowestUsages()
+        {
+            return this.ExtremeUsage(false);
+        }
+
+        [HttpGet("longestpeakusage")]
+        public List<string> longestPeakUsageDuraiton()
+        {
+            return this.ExtremeUsageDuration(true);
+        }
+
+        [HttpGet("longestlowestusage")]
+        public List<string> longestLowestUsageDuraiton()
+        {
+            return this.ExtremeUsageDuration(false);
+        }
+
+
+        public bool IsUsageExtreme(float cpuUsageValue, bool peak=true)
+        {
+            if (peak)
+            {
+                return analytics.IsResourceUsagePeak(cpuUsageValue);
+            }
+            return analytics.IsResourceUsageLowest(cpuUsageValue);
+        }
+
+        public List<CpuUsageModel> ExtremeUsage(bool peak=true)
         {
             List<CpuUsageModel> dailyUsages = this.Daily();
             List<CpuUsageModel> peakUsages = new List<CpuUsageModel>();
 
             foreach(CpuUsageModel usage in dailyUsages)
             {
-                if (analytics.IsResourceUsageLowest(usage.resourceUsage))
+                if (this.IsUsageExtreme(usage.resourceUsage, peak))
                 {
                     peakUsages.Add(usage);
                 }
@@ -61,8 +78,8 @@ namespace RemoteMonitor.Controller
             return peakUsages;
         }
 
-        [HttpGet("longestpeakusage")]
-        public List<string> longestPeakUsageDuraiton()
+
+        public List<string> ExtremeUsageDuration(bool peak=true)
         {
             List<CpuUsageModel> dailyUsages = this.Daily();
             List<CpuUsageModel> peakUsages = new List<CpuUsageModel>();
@@ -70,7 +87,7 @@ namespace RemoteMonitor.Controller
             for (int i=0; i< dailyUsages.Count-1; i++)
             {
                 int nextPeakUsagePos = i+1;
-                while (analytics.IsResourceUsagePeak(dailyUsages[nextPeakUsagePos].resourceUsage))
+                while (this.IsUsageExtreme(dailyUsages[nextPeakUsagePos].resourceUsage, peak))
                 {
                     nextPeakUsagePos += 1;
                 }
@@ -79,6 +96,7 @@ namespace RemoteMonitor.Controller
                     peakUsages.Clear();
                     peakUsages.Add(dailyUsages[i]);
                     peakUsages.Add(dailyUsages[nextPeakUsagePos-1]);
+                    longestDuration = nextPeakUsagePos-i;
                 }
                 i = nextPeakUsagePos-1;
             }
