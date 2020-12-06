@@ -2,6 +2,7 @@ using RemoteMonitor.Usage;
 using RemoteMonitor.Models;
 using System.Collections.Generic;
 using RemoteMonitor.DbHandlers;
+using System.Linq;
 
 namespace RemoteMonitor.Analytics
 {   
@@ -32,7 +33,7 @@ namespace RemoteMonitor.Analytics
         public List<MemoryUsageModel> Daily()
         {
             MemoryUsageDbQuery memoryUsageDbQuery = new MemoryUsageDbQuery();
-            return memoryUsageDbQuery.GetDailyUsage();
+            return memoryUsageDbQuery.GetDailyUsage().Cast<MemoryUsageModel>().ToList();
         }
     }
 }

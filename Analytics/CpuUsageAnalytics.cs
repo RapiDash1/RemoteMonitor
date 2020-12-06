@@ -2,6 +2,7 @@ using RemoteMonitor.Usage;
 using RemoteMonitor.Models;
 using System.Collections.Generic;
 using RemoteMonitor.DbHandlers;
+using System.Linq;
 
 namespace RemoteMonitor.Analytics
 {   
@@ -15,7 +16,7 @@ namespace RemoteMonitor.Analytics
         public List<CpuUsageModel> Daily()
         {
             CpuUsageDbQuery cpuUsageDbQuery = new CpuUsageDbQuery();
-            return cpuUsageDbQuery.GetDailyUsage();
+            return cpuUsageDbQuery.GetDailyUsage().Cast<CpuUsageModel>().ToList();
         }
     }
 }

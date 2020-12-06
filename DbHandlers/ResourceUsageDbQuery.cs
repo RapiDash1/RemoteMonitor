@@ -32,7 +32,7 @@ namespace RemoteMonitor.DbHandlers
 
         public virtual ResourceUsageModel ConstructUsageModel(SqliteDataReader reader)
         {
-            return new ResourceUsageModel(Convert.ToUInt64(reader.GetString(0)));
+            return new ResourceUsageModel(reader.GetInt32(0), reader.GetFloat(1));
         }
 
 
@@ -57,6 +57,18 @@ namespace RemoteMonitor.DbHandlers
             // {
             //     Console.WriteLine(usage.ToString());
             // }
+            return resourceUsages;
+        }
+
+        public virtual string DailyUsageQuery()
+        {
+            return String.Format(@"SELECT EpocTime, CpuUsage FROM {0} WHERE EpocTime >= {1}", 
+                                    this.TableName(), this.StartOfTheDayInEpochSeconds());
+        }
+
+        public List<ResourceUsageModel> GetDailyUsage()
+        {
+            List<ResourceUsageModel> resourceUsages = GetResourceUsage(this.DailyUsageQuery());
             return resourceUsages;
         }
     }

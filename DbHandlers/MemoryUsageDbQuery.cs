@@ -8,19 +8,16 @@ namespace RemoteMonitor.DbHandlers
 {
     public class MemoryUsageDbQuery : ResourceUsageDbQuery
     {
-        
-        public override ResourceUsageModel ConstructUsageModel(SqliteDataReader reader)
+
+        public override string DailyUsageQuery()
         {
-            return new MemoryUsageModel(Convert.ToUInt64(reader.GetString(0)), reader.GetFloat(1));
+            return String.Format(@"SELECT EpocTime, MemoryUsage FROM {0} WHERE EpocTime >= {1}", 
+                                    this.TableName(), this.StartOfTheDayInEpochSeconds());
         }
 
-        public List<MemoryUsageModel> GetDailyUsage()
+        public override ResourceUsageModel ConstructUsageModel(SqliteDataReader reader)
         {
-            List<ResourceUsageModel> cpuUsages = GetResourceUsage(String.Format(
-                        @"SELECT EpocTime, MemoryUsage FROM {0} WHERE EpocTime >= {1}", 
-                                    base.TableName(), base.StartOfTheDayInEpochSeconds()));
-            
-            return cpuUsages.Cast<MemoryUsageModel>().ToList();
+            return new MemoryUsageModel(reader.GetInt32(0), reader.GetFloat(1));
         }
     }
 }

@@ -5,16 +5,13 @@ namespace RemoteMonitor.Models
     public class CpuUsageModel : ResourceUsageModel
     {
 
-        public float cpuUsage { get; set; }
-
-        public CpuUsageModel(UInt64 epocTime, float cpuUsage) : base(epocTime)
+        public CpuUsageModel(int epocTime, float resourceUsage) : base(epocTime, resourceUsage)
         {
-            this.cpuUsage = cpuUsage;
         }
 
-        public override string ToString()
+        public override string ResourceTypeString()
         {
-            return "EpocTime: " + this.epocTime + " || CpuUsage: " + this.cpuUsage + "%";
+            return "%";
         }
     }
 }
