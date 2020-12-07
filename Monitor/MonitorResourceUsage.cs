@@ -33,7 +33,7 @@ namespace RemoteMonitor.Monitor
 
         public List<TotalResourceUsageModel> GetResourceUsage()
         {
-            return this.dbHandler.GetResourceUsage();
+            return this.dbHandler.GetDailyUsage();
         }
     }
 }
