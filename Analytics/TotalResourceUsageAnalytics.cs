@@ -25,7 +25,7 @@ namespace RemoteMonitor.Analytics
 
         public string Current()
         {
-            return "Cpu usage: "+ cpuUsageAnalytics.Current() + "% || " + memoryUsageAnalytics.Current() + " MB";
+            return "Cpu usage: "+ cpuUsageAnalytics.Current() + "% || Memory Available: " + memoryUsageAnalytics.Current() + " MB";
         }
     }
 }

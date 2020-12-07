@@ -64,16 +64,12 @@ namespace RemoteMonitor.DbHandlers
                     }
                 }
             }
-            foreach (TotalResourceUsageModel usage in resourceUsages)    
-            {
-                Console.WriteLine(usage.ToString());
-            }
             return resourceUsages;
         }
 
         public string DailyUsageQuery()
         {
-            return String.Format(@"SELECT EpocTime, CpuUsage FROM {0} WHERE EpocTime >= {1}", 
+            return String.Format(@"SELECT EpocTime, CpuUsage, MemoryUsage FROM {0} WHERE EpocTime >= {1}", 
                                     this.TableName(), this.StartOfTheDayInEpochSeconds());
         }
 
