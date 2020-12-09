@@ -9,6 +9,12 @@ namespace RemoteMonitor.Models
         {
         }
 
+        /// <summary>
+        /// String representation of this class
+        /// </summary> 
+        /// <returns>
+        /// A string the type of the resource to suffix
+        /// </returns> 
         public override string ResourceTypeString()
         {
             return "%";
