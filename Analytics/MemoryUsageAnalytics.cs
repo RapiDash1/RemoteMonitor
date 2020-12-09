@@ -15,21 +15,47 @@ namespace RemoteMonitor.Analytics
             base.lowestUsageThreshold = 1000;
         }
 
+        /// <summary>
+        /// Total Memory of the server
+        /// </summary>
+        /// <returns>
+        /// An int returning the total memory capacity of the server
+        /// </returns>
         public int TotalMemory()
         {
             return 16000;
         }
 
-        public override bool IsResourceUsagePeak(float resourceUsage)
+        /// <summary>
+        /// Check if Memory usage is peak
+        /// </summary>
+        /// <param name="memoryUsage">memoryUsage for which peak-check should be made</param>
+        /// <returns>
+        /// A bool indicating whether Memory usage is peak
+        /// </returns>
+        public override bool IsResourceUsagePeak(float memoryUsage)
         {
-            return this.TotalMemory() - resourceUsage >= peakUsageThreshold;
+            return this.TotalMemory() - memoryUsage >= peakUsageThreshold;
         }
 
-        public override bool IsResourceUsageLowest(float resourceUsage)
+        /// <summary>
+        /// Check if Memory usage is low
+        /// </summary>
+        /// <param name="memoryUsage">memoryUsage for which low-check should be made</param>
+        /// <returns>
+        /// A bool indicating whether Memory usage is low
+        /// </returns>
+        public override bool IsResourceUsageLowest(float memoryUsage)
         {
-            return this.TotalMemory() - resourceUsage <= lowestUsageThreshold;
+            return this.TotalMemory() - memoryUsage <= lowestUsageThreshold;
         }
 
+        /// <summary>
+        /// Daily memory usages
+        /// </summary>
+        /// <returns>
+        /// A list of MemoryUsageModel
+        /// </returns>
         public List<MemoryUsageModel> Daily()
         {
             MemoryUsageDbQuery memoryUsageDbQuery = new MemoryUsageDbQuery();

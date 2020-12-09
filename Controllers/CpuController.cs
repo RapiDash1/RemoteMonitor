@@ -8,13 +8,22 @@ using RemoteMonitor.Analytics;
 using System.Linq;
 
 namespace RemoteMonitor.Controller
-{
+{   
+    /// <summary>
+    /// Control Api behaviour for /cpu path
+    /// </summary>
     [Route("cpu/")]
     [ApiController]
     public class CpuController : ControllerBase
     {
         private CpuUsageAnalytics analytics = new CpuUsageAnalytics();
 
+        /// <summary>
+        /// Get current CPU usage
+        /// </summary>
+        /// <returns>
+        /// The current CPU usage percent in the form of a floating point number
+        /// </returns>
         [HttpGet("current")]
         public float Current()
         {
@@ -22,6 +31,12 @@ namespace RemoteMonitor.Controller
             return cpuUsage.Current();
         }
 
+        /// <summary>
+        /// Get daily CPU usage
+        /// </summary>
+        /// <returns>
+        /// A list of CpuUsageModel
+        /// </returns>
         [HttpGet("daily")]
         public List<CpuUsageModel> Daily()
         {
@@ -29,31 +44,64 @@ namespace RemoteMonitor.Controller
             return cpuUsageDbQuery.GetDailyUsage().Cast<CpuUsageModel>().ToList();
         }
 
+        /// <summary>
+        /// Get peak CPU usages
+        /// Peak CPU usage is usage that is above <code>analytics.peakUsageThreshold<code>
+        /// </summary>
+        /// <returns>
+        /// A list of CpuUsageModel
+        /// </returns>
         [HttpGet("peakusages")]
         public List<CpuUsageModel> PeakUsages()
         {
-            return this.ExtremeUsage(true);
+            return this.ExtremeUsages(true);
         }
 
+        /// <summary>
+        /// Get lowest CPU usages
+        /// Lowest CPU usage is usage that is below <code>analytics.lowestUsageThreshold<code>
+        /// </summary>
+        /// <returns>
+        /// A list of CpuUsageModel
+        /// </returns>
         [HttpGet("lowestusages")]
         public List<CpuUsageModel> LowestUsages()
         {
-            return this.ExtremeUsage(false);
+            return this.ExtremeUsages(false);
         }
 
+        /// <summary>
+        /// Get start and end times of the longest duration of peak CPU usage
+        /// </summary>
+        /// <returns>
+        /// A list of strings containing the start and end times of longest peak CPU usage
+        /// </returns>
         [HttpGet("longestpeakusage")]
         public List<string> longestPeakUsageDuraiton()
         {
             return this.ExtremeUsageDuration(true);
         }
 
+        /// <summary>
+        /// Get start and end times of the longest duration of lowest CPU usage
+        /// </summary>
+        /// <returns>
+        /// A list of strings containing the start and end times of longest lowest CPU usage
+        /// </returns>
         [HttpGet("longestlowestusage")]
         public List<string> longestLowestUsageDuraiton()
         {
             return this.ExtremeUsageDuration(false);
         }
 
-
+        /// <summary>
+        /// Check if usage is either peak or low
+        /// </summary>
+        /// <param name="cpuUsageValue">CPU usage value to check if it is extreme</param>
+        /// <param name="peak">Should function check for peak or low usage?</param>
+        /// <returns>
+        /// A bool indicating whether usage is extreme, either low or peak
+        /// </returns>
         public bool IsUsageExtreme(float cpuUsageValue, bool peak=true)
         {
             if (peak)
@@ -63,7 +111,14 @@ namespace RemoteMonitor.Controller
             return analytics.IsResourceUsageLowest(cpuUsageValue);
         }
 
-        public List<CpuUsageModel> ExtremeUsage(bool peak=true)
+        /// <summary>
+        /// Get Peak or Low usage
+        /// </summary>
+        /// <param name="peak">Should function return peak or low usage?</param>
+        /// <returns>
+        /// A list of CpuUsageModel which have extreme CPU usage
+        /// </returns>
+        public List<CpuUsageModel> ExtremeUsages(bool peak=true)
         {
             List<CpuUsageModel> dailyUsages = this.Daily();
             List<CpuUsageModel> peakUsages = new List<CpuUsageModel>();
@@ -78,7 +133,13 @@ namespace RemoteMonitor.Controller
             return peakUsages;
         }
 
-
+        /// <summary>
+        /// Get maximum duration of Peak or Low usage
+        /// </summary>
+        /// <param name="peak">Should function return peak or low usage?</param>
+        /// <returns>
+        /// A list of strings containing the start and end times of longest peak CPU usage
+        /// </returns>
         public List<string> ExtremeUsageDuration(bool peak=true)
         {
             List<CpuUsageModel> dailyUsages = this.Daily();

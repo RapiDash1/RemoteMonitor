@@ -13,6 +13,12 @@ namespace RemoteMonitor.Analytics
             this.resourceUsage = new CpuUsage();
         }
 
+        /// <summary>
+        /// Daily CPU usages
+        /// </summary>
+        /// <returns>
+        /// A list of CpuUsageModel
+        /// </returns>
         public List<CpuUsageModel> Daily()
         {
             CpuUsageDbQuery cpuUsageDbQuery = new CpuUsageDbQuery();

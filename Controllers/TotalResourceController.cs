@@ -9,18 +9,33 @@ using System.Linq;
 
 namespace RemoteMonitor.Controller
 {
+    /// <summary>
+    /// Control Api behaviour for /totalresources path
+    /// </summary>
     [Route("totalresources/")]
     [ApiController]
     public class TotalResourceController : ControllerBase
     {
         private TotalResourceUsageAnalytics analytics = new TotalResourceUsageAnalytics();
 
+        /// <summary>
+        /// Get current Total Resource usage
+        /// </summary>
+        /// <returns>
+        /// The current Total Resource usage
+        /// </returns>
         [HttpGet("current")]
         public string Current()
         {
             return analytics.Current();
         }
 
+        /// <summary>
+        /// Get daily Total Resource usage
+        /// </summary>
+        /// <returns>
+        /// The list of TotalResourceUsageModel
+        /// </returns>
         [HttpGet("daily")]
         public List<TotalResourceUsageModel> Daily()
         {
@@ -28,31 +43,64 @@ namespace RemoteMonitor.Controller
             return usageDbHandler.GetDailyUsage();
         }
 
+        /// <summary>
+        /// Get peak Total Resource usages
+        /// Peak Total Resource usage is usage that is above either CPU or Memory peak threshold
+        /// </summary>
+        /// <returns>
+        /// A list of TotalResourceUsageModel
+        /// </returns>
         [HttpGet("peakusages")]
         public List<TotalResourceUsageModel> PeakUsages()
         {
             return this.ExtremeUsage(true);
         }
 
+        /// <summary>
+        /// Get lowest Total Resource usages
+        /// Lowest Total Resource usage is usage that is above either CPU or Memory low threshold
+        /// </summary>
+        /// <returns>
+        /// A list of TotalResourceUsageModel
+        /// </returns>
         [HttpGet("lowestusages")]
         public List<TotalResourceUsageModel> LowestUsages()
         {
             return this.ExtremeUsage(false);
         }
 
+        /// <summary>
+        /// Get start and end times of the longest duration of peak Total Resource usage
+        /// </summary>
+        /// <returns>
+        /// A list of strings containing the start and end times of longest peak Total Resource usage
+        /// </returns>
         [HttpGet("longestpeakusage")]
         public List<string> longestPeakUsageDuraiton()
         {
             return this.ExtremeUsageDuration(true);
         }
 
+        /// <summary>
+        /// Get start and end times of the longest duration of lowest Total Resource usage
+        /// </summary>
+        /// <returns>
+        /// A list of strings containing the start and end times of longest lowest Total Resource usage
+        /// </returns>
         [HttpGet("longestlowestusage")]
         public List<string> longestLowestUsageDuraiton()
         {
             return this.ExtremeUsageDuration(false);
         }
 
-
+        /// <summary>
+        /// Check if usage is either peak or low
+        /// </summary>
+        /// <param name="cpuUsageValue">Total Resource usage value to check if it is extreme</param>
+        /// <param name="peak">Should function check for peak or low usage?</param>
+        /// <returns>
+        /// A bool indicating whether usage is extreme, either low or peak
+        /// </returns>
         public bool IsUsageExtreme(TotalResourceUsageModel resourceUsage, bool peak=true)
         {
             if (peak)
@@ -62,6 +110,13 @@ namespace RemoteMonitor.Controller
             return analytics.IsResourceUsageLowest(resourceUsage);
         }
 
+        /// <summary>
+        /// Get Peak or Low usage
+        /// </summary>
+        /// <param name="peak">Should function return peak or low usage?</param>
+        /// <returns>
+        /// A list of TotalResourceUsageModel which have extreme Total Resource usage
+        /// </returns>
         public List<TotalResourceUsageModel> ExtremeUsage(bool peak=true)
         {
             List<TotalResourceUsageModel> dailyUsages = this.Daily();
@@ -77,7 +132,13 @@ namespace RemoteMonitor.Controller
             return peakUsages;
         }
 
-
+        /// <summary>
+        /// Get maximum duration of Peak or Low usage
+        /// </summary>
+        /// <param name="peak">Should function return peak or low usage?</param>
+        /// <returns>
+        /// A list of strings containing the start and end times of longest peak Total Resource usage
+        /// </returns>
         public List<string> ExtremeUsageDuration(bool peak=true)
         {
             List<TotalResourceUsageModel> dailyUsages = this.Daily();
